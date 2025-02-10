@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: argocd-demo
-        image: ghcr.io/cloudsteak/argocd-demo:latest  # Update with your GitHub repo & image registry
+        image: ghcr.io/cloudsteak/argocd-demo:latest
         ports:
         - containerPort: 3000
         resources:
