@@ -13,6 +13,8 @@ spec:
       labels:
         app: argocd-demo
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
       - name: argocd-demo
         image: ghcr.io/cloudsteak/argocd-demo:latest
