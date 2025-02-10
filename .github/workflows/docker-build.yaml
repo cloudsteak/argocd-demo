@@ -22,6 +22,7 @@ jobs:
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
     - name: Build Docker Image
+      working-directory: ./app
       run: docker build -t ghcr.io/${{ github.repository_owner }}/argocd-demo:latest .
 
     - name: Push Docker Image to GHCR
@@ -38,7 +39,7 @@ jobs:
 
     - name: Update Image in Deployment
       run: |
-        sed -i 's|image: ghcr.io/.*/argocd-demo:.*|image: ghcr.io/${{ github.repository_owner }}/argocd-demo:latest|g' k8s/deployment.yaml
+        sed -i 's|image: ghcr.io/.*/argocd-demo:.*|image: ghcr.io/${{ github.repository_owner }}/argocd-demo:latest|g' kubernetes/deployment.yaml
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
         git commit -am "Update ArgoCD deployment to latest image"
