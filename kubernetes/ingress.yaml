@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-demo-ingress
+  namespace: argocd-demo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Use your configured ClusterIssuer
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - argocd-demo.cloudmentor.hu  # Replace with your actual domain
+      secretName: argocd-demo-tls  # TLS certificate stored in this secret
+  rules:
+    - host: argocd-demo.cloudmentor.hu  # Replace with your actual domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-demo-service
+                port:
+                  number: 80
