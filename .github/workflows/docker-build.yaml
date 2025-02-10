@@ -46,6 +46,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Get Short SHA
+      id: vars
+      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     - name: Update Image in Deployment
       run: |
         sed -i 's|image: ghcr.io/.*/argocd-demo:.*|image: ghcr.io/${{ github.repository_owner }}/argocd-demo:${{ env.SHORT_SHA }}|g' kubernetes/deployment.yaml
