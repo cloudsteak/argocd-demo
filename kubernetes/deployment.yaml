@@ -17,7 +17,7 @@ spec:
         - name: ghcr-secret
       containers:
       - name: argocd-demo
-        image: ghcr.io/cloudsteak/argocd-demo:
+        image: ghcr.io/cloudsteak/argocd-demo:17b41af
         ports:
         - containerPort: 3000
         resources:
