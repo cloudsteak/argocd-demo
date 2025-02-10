@@ -55,5 +55,5 @@ jobs:
         sed -i 's|image: ghcr.io/.*/argocd-demo:.*|image: ghcr.io/${{ github.repository_owner }}/argocd-demo:${{ env.SHORT_SHA }}|g' kubernetes/deployment.yaml
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
-        git commit -am "Update ArgoCD deployment to latest image"
+        git commit -am "Update ArgoCD deployment to image ${{ env.SHORT_SHA }}"
         git push origin main
