@@ -1,0 +1,14 @@
+{
+    "name": "argo-app",
+    "version": "1.0.0",
+    "description": "A simple Node.js 22 app for ArgoCD deployment",
+    "type": "module",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2"
+    }
+  }
+  
