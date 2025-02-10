@@ -18,6 +18,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Get Short SHA
+      id: vars
+      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     - name: Log in to GitHub Container Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
@@ -25,8 +29,13 @@ jobs:
       working-directory: ./app
       run: docker build -t ghcr.io/${{ github.repository_owner }}/argocd-demo:latest .
 
+    - name: Tag Docker Image
+      run: docker tag ghcr.io/${{ github.repository_owner }}/argocd-demo:latest ghcr.io/${{ github.repository_owner }}/argocd-demo:${{ env.SHORT_SHA }}
+
     - name: Push Docker Image to GHCR
-      run: docker push ghcr.io/${{ github.repository_owner }}/argocd-demo:latest
+      run: |
+        docker push ghcr.io/${{ github.repository_owner }}/argocd-demo:latest
+        docker push ghcr.io/${{ github.repository_owner }}/argocd-demo:${{ env.SHORT_SHA }}
 
   update-argocd:
     name: Update ArgoCD Deployment
@@ -44,10 +53,3 @@ jobs:
         git config --global user.email "github-actions@github.com"
         git commit -am "Update ArgoCD deployment to latest image"
         git push origin main
-
-    - name: Trigger ArgoCD Sync (Optional)
-      if: false
-      run: |
-        curl -X POST -H "Content-Type: application/json" \
-        -H "Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}" \
-        https://argo.example.com/api/v1/applications/argocd-demo/sync
