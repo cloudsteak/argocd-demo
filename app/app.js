@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send('Hello from Node.js 22 deployed with ArgoCD!');
+    res.send('Hello from Node.js 22 - deployed with ArgoCD!');
 });
 
 app.listen(PORT, () => {
